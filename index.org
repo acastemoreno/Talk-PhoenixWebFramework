@@ -1,0 +1,133 @@
+* Slide Options                           :noexport:
+# ======= Appear in cover-slide ====================
+#+TITLE: Phoenix: Elixir Web Framework
+#+SUBTITLE: Conceptos y diferencias contra Rails
+#+COMPANY: Codeable
+#+AUTHOR: Albert Castellano Moreno
+#+EMAIL: acastemoreno@gmail.com
+
+# ======= Appear in thank-you-slide ================
+#+GITHUB: http://github.com/acastemoreno
+
+# ======= Appear under each slide ==================
+#+FAVICON: images/phoenix.png
+#+ICON: images/phoenix.png
+#+HASHTAG: #Codeable #liveview #phoenixframework #phoenix
+
+# ======= Google Analytics =========================
+#+ANALYTICS: ----
+
+# ======= Org settings =========================
+#+EXCLUDE_TAGS: noexport
+#+OPTIONS: toc:nil num:nil ^:nil
+#+LANGUAGE: es
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="theme/css/custom.css" />
+
+* First Steps
+  :PROPERTIES:
+  :SLIDE:    segue dark quote
+  :ASIDE:    right bottom
+  :ARTICLE:  flexbox vleft auto-fadein
+  :END:
+
+** Notas
+- Requerimientos:
+  - Elixir > 1.6
+  - inotify-tools
+- Integración por default
+  - Node (webpack)
+  - PostgreSQL
+
+** Instalación
+#+BEGIN_SRC shell
+$ mix archive.install hex phx_new 1.5.4
+$ mix phx.new demo
+$ cd demo
+
+# configuró la conexión a la base de datos (config/dev.ex)
+
+$ mix ecto.setup
+$ mix phx.server
+#+END_SRC
+
+#+ATTR_HTML: :class note
+#+BEGIN_QUOTE
+solo para nota[fn:1]
+solo para nota[fn:2]
+solo para nota[fn:3]
+solo para nota[fn:4]
+solo para nota[fn:5]
+#+END_QUOTE
+
+* Entender como funciona
+  :PROPERTIES:
+  :SLIDE:    segue dark quote
+  :ASIDE:    right bottom
+  :ARTICLE:  flexbox vleft auto-fadein
+  :END:
+
+** Mix
+- Especificacion del proyecto
+- Let's see =mix.exs=
+ 
+#+ATTR_HTML: :class note
+#+BEGIN_QUOTE
+solo para nota[fn:6]
+#+END_QUOTE
+
+** Application
+- Es un concepto similar a "Library", con algunas diferencias.
+- Implementa una funcionalidad Especifica
+- Un =Application= puede ser =iniciada= y =detenida=
+- Es parte de la libreria/especificacion =OTP=
+
+#+ATTR_HTML: :class note
+#+BEGIN_QUOTE
+solo para nota[fn:7]
+#+END_QUOTE
+
+** OTP (Open Telecom Platform)
+- Framework que forma parte de la libreria standart de Erlang.
+- Sirve para crear sistemas concurrentes y distribuidos de alta confiabilidad.
+- Existen proyectos creados con OTP que alcanzaron la confiabilida de los nine ninths 
+  -0.5s de insdisponibilidad en 32 años de funcionamiento.
+
+** Resumen funcionamiento OTP
+#+BEGIN_CENTER
+#+ATTR_HTML: :height 420px
+[[file:images/supervision_tree.png]]
+#+END_CENTER
+
+** Actores (procesos)
+#+BEGIN_CENTER
+#+ATTR_HTML: :height 420px
+[[file:images/props_process.png]]
+#+END_CENTER
+
+** Es facil agregar conexión a *otras* base de datos.
+Demo Time
+- Press =p= to get help
+#+ATTR_HTML: :class note
+#+BEGIN_QUOTE
+- =ecto_repos= en *config.exs*
+- Repo config en *dev.exs*
+- Crear *lib/demo/amiguito.ex*
+- Agregar =Demo.Amiguito= al *arbol de supervision*
+- Crear carpeta migrations y archivos seeds *lib/priv/amiguito/migrations*
+#+END_QUOTE
+
+* Thank You ʕ•ᴥ•ʔ
+:PROPERTIES:
+:SLIDE: thank-you-slide segue
+:ASIDE: right
+:ARTICLE: flexbox vleft auto-fadein
+:END:
+
+* Footnotes
+[fn:1] [[https://hexdocs.pm/phoenix/installation.html#content][Phoenix Installation Guide]]
+[fn:2] Mix: Build Tool para crear, compilar y testear proyectos elixir
+[fn:3] Hex: Gestor de paquetes
+[fn:4] phx_new: Helper para crear proyectos Phoenix
+[fn:5] [[https://hexdocs.pm/phx_new/Mix.Tasks.Phx.New.html][Documentación phx_new]]
+[fn:6] [[https://hexdocs.pm/mix/Mix.html][Documentación Mix]]
+[fn:7] [[https://hexdocs.pm/elixir/Application.html][Documentación Application]]
