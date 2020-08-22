@@ -94,19 +94,20 @@ solo para nota[fn:7]
 
 ** Resumen funcionamiento OTP
 #+BEGIN_CENTER
-#+ATTR_HTML: :height 420px
+#+ATTR_HTML: :height 400px
 [[file:images/supervision_tree.png]]
 #+END_CENTER
 
 ** Actores (procesos)
 #+BEGIN_CENTER
-#+ATTR_HTML: :height 420px
+#+ATTR_HTML: :height 400px
 [[file:images/props_process.png]]
 #+END_CENTER
 
 ** Es facil agregar conexión a *otras* base de datos.
 Demo Time
 - Press =p= to get help
+
 #+ATTR_HTML: :class note
 #+BEGIN_QUOTE
 - =ecto_repos= en *config.exs*
@@ -116,6 +117,178 @@ Demo Time
 - Crear carpeta migrations y archivos seeds *lib/priv/amiguito/migrations*
 #+END_QUOTE
 
+** Revision archivo Demo.Repo
+#+BEGIN_SRC shell
+defmodule Demo.Repo do
+  use Ecto.Repo,
+    otp_app: :demo,
+    adapter: Ecto.Adapters.Postgres
+end
+#+END_SRC
+- ¿Comó es que el modulo obtiene información necesaria para conectarse a la base de datos?
+  - Macros y Metaprogramación.
+
+** Metaprogramación
+- No es solo crear nueva sintaxis dentro del lenguaje.
+- Es *modificar al lenguaje*
+  - Tomar codigo del lenguaje y hacer algo con este.
+
+Habilita la creacion de DSL's (Domain Specific Languages)
+- Presenta conceptos como AST, Hygiene y =__using__=
+
+#+ATTR_HTML: :class note
+#+BEGIN_QUOTE
+solo para nota[fn:8]
+#+END_QUOTE
+
+** Metaprogramación - DEMO
+#+BEGIN_SRC shell
+iex> require MyMacro
+iex> MyMacro.say(3+4)
+iex> MyMacro.say(3*4)
+#+END_SRC
+
+* Endpoint
+  :PROPERTIES:
+  :SLIDE:    segue dark quote
+  :ASIDE:    right bottom
+  :ARTICLE:  flexbox vleft auto-fadein
+  :END:
+
+* Perfect Match para Web
+  :PROPERTIES:
+  :SLIDE:    segue dark quote
+  :ASIDE:    right bottom
+  :ARTICLE:  flexbox vleft auto-fadein
+  :END:
+
+* Request -> App -> Response
+#+BEGIN_CENTER
+#+ATTR_HTML: :height 220px
+[[file:images/request-response.png]]
+#+END_CENTER
+
+* Funciones
+#+BEGIN_CENTER
+#+ATTR_HTML: :height 420px
+[[file:images/funciones.png]]
+#+END_CENTER
+
+** Pipe Operator =|>=
+#+BEGIN_CENTER
+#+ATTR_HTML: :width 295px
+[[file:images/chain_function.png]]
+#+END_CENTER
+
+** Pipe Operator =|>=
+#+BEGIN_SRC elixir
+1..500000
+  |> Enum.map(&(&1*2-20))
+  |> Enum.filter(&(rem(&1, 3) == 0 || rem(&1, 5) == 0))
+  |> Enum.take(5)
+#+END_SRC
+
+** Plug (Pipe operator para conexiones)
+#+BEGIN_CENTER
+#+ATTR_HTML: :height 420px
+[[file:images/plug-diagrama.jpeg]]
+#+END_CENTER
+
+* Plug
+  :PROPERTIES:
+  :TITLE: hide
+  :SLIDE: segue dark quote
+  :ASIDE: right bottom
+  :ARTICLE: flexbox vleft auto-fadein line-through
+  :END:
+#+BEGIN_QUOTE
+Plug is a specification for composable modules in between web applications. It is also an abstraction layer for connection of adapters of different web server.
+
+– Phoenix docs
+#+END_QUOTE
+
+** Let's see *lib/demo/lib/endpoint.ex*
+Plug, Plug, Plug
+
+Hasta que llegamos a =plug DemoWeb.Router=
+
+** Router
+- Pipelines
+- Scope
+- Controllers
+
+** MVC
+#+BEGIN_CENTER
+#+ATTR_HTML: :height 420px
+[[file:images/mvc.png]]
+#+END_CENTER
+
+** Diferencias contra MVC tradicional
+#+BEGIN_SRC shell
+$ mix phx.gen.html Accounts User users name:string username:string:unique
+#+END_SRC
+
+** Controlador
+- Usa los *contextos* para obtener información.
+- No conoce nada en absoluto sobre los modelos.
+- Representa el *Web Domain* de la applicacion.
+- Usa a las vistas para emitir un response
+
+
+** Contextos
+- Mantra: *Phoenix is not your application*
+- Refuerza la diferencia entre *Bussiness domain*, *Web domain* y *Model Domain*
+- Los *Contextos* son los unicos modulos que son capaces de usar los *Modelos*
+
+- CAPSTONE REFERENCE
+
+#+ATTR_HTML: :class note
+#+BEGIN_QUOTE
+solo para nota[fn:9]
+solo para nota[fn:10]
+solo para nota[fn:11]
+#+END_QUOTE
+
+** Working with Models
+Patron Repository vs ActiveRecord
+#+BEGIN_SRC elixir
+def update_user(%User{} = user, attrs) do
+  user
+  |> User.changeset(attrs)
+  |> Repo.update()
+end
+#+END_SRC
+
+#+ATTR_HTML: :class note
+#+BEGIN_QUOTE
+solo para nota[fn:12]
+#+END_QUOTE
+
+* Killer Features/Projects
+  :PROPERTIES:
+  :SLIDE:    segue dark quote
+  :ASIDE:    right bottom
+  :ARTICLE:  flexbox vleft auto-fadein
+  :END:
+
+** Phoenix LiveDashboard
+#+BEGIN_CENTER
+#+ATTR_HTML: :height 420px
+[[file:images/live_dashboard.png]]
+#+END_CENTER
+
+** Phoenix LiveView
+#+BEGIN_CENTER
+#+ATTR_HTML: :width 900px
+[[file:images/liveview.png]]
+#+END_CENTER
+
+* Scaling
+- Monolith
+- Umbrella Project
+- Process Communication
+- Multiples node
+  
 * Thank You ʕ•ᴥ•ʔ
 :PROPERTIES:
 :SLIDE: thank-you-slide segue
@@ -131,3 +304,8 @@ Demo Time
 [fn:5] [[https://hexdocs.pm/phx_new/Mix.Tasks.Phx.New.html][Documentación phx_new]]
 [fn:6] [[https://hexdocs.pm/mix/Mix.html][Documentación Mix]]
 [fn:7] [[https://hexdocs.pm/elixir/Application.html][Documentación Application]]
+[fn:8] [[https://pragprog.com/titles/cmelixir/metaprogramming-elixir/][Libro - Metaprogramming Elixir]]
+[fn:9] [[https://youtu.be/l3VgbSgo71E][Video - Building beautiful systems with Phoenix contexts]]
+[fn:10] [[https://pragprog.com/titles/lhelph/functional-web-development-with-elixir-otp-and-phoenix/][Libro - Functional Web Development with Elixir, OTP, and Phoenix]]
+[fn:11] [[https://hexdocs.pm/phoenix/contexts.html#content][Documentación Phoenix Context]]
+[fn:12] [[https://pragprog.com/titles/wmecto/programming-ecto/][Libro - Programming Ecto]]
