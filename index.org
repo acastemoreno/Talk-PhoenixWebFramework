@@ -288,6 +288,9 @@ solo para nota[fn:12]
 - Umbrella Project
 - Process Communication
 - Multiples node
+
+* Video Recomendado
+[[https://youtu.be/bk3icU8iIto][GOTO 2016 • Phoenix a Web Framework for the New Web • José Valim]]
   
 * Thank You ʕ•ᴥ•ʔ
 :PROPERTIES:
